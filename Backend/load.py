@@ -10,7 +10,7 @@ def init():
     return device, model, preprocess
 
 def create_database():
-    FEATURES_PATH = '../CLIPFeatures'
+    FEATURES_PATH = '../../CLIPFeatures'
 
     db = []
     for fol in os.listdir(FEATURES_PATH):

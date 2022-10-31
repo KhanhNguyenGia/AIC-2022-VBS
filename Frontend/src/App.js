@@ -71,7 +71,7 @@ function App() {
                 <IconLabelButtons type="submit" />
             </form>
             <TitlebarBelowImageList images={images} />
-            <div></div>
+            <div>Changed</div>
         </div>
     );
 }

@@ -70,7 +70,18 @@ function App() {
                 />
                 <IconLabelButtons type="submit" />
             </form>
-            <TitlebarBelowImageList images={images} />
+            <div
+                style={{
+                    display: "flex",
+                    flexFlow: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    gap: 5,
+                }}
+            >
+                <TitlebarBelowImageList images={images} />
+                
+            </div>
         </div>
     );
 }

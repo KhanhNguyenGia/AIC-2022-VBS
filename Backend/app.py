@@ -39,11 +39,11 @@ def search():
     
 @app.route('/<video_name>/')
 def get_keyframe_list(video_name):
-    KEYFRAMES_PATH = '../KeyFrames/'
+    KEYFRAMES_PATH = '../../KeyFrames/'
     keyframe_fol = os.path.join(KEYFRAMES_PATH, video_name)
     data = []
     for keyframe in os.listdir(keyframe_fol):
-        data.append(os.path.join(keyframe_fol, keyframe)[3:])
+        data.append(os.path.join(keyframe_fol, keyframe)[6:])
 
     data = sorted(data)
     

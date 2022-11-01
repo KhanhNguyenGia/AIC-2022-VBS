@@ -2,6 +2,7 @@ from crypt import methods
 import os
 import json
 from urllib import response
+import csv
 
 from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
@@ -40,13 +41,28 @@ def search():
 @app.route('/<video_name>/')
 def get_keyframe_list(video_name):
     KEYFRAMES_PATH = '../../KeyFrames/'
-    keyframe_fol = os.path.join(KEYFRAMES_PATH, video_name)
-    data = []
-    for keyframe in os.listdir(keyframe_fol):
-        data.append(os.path.join(keyframe_fol, keyframe)[6:])
 
-    data = sorted(data)
-    
+    keyframe_fol = os.path.join(KEYFRAMES_PATH, video_name)
+    image_paths = []
+    for keyframe in os.listdir(keyframe_fol):
+        image_paths.append(os.path.join(keyframe_fol, keyframe)[6:])
+
+    image_paths = sorted(image_paths)
+
+    keyframePosPath = os.path.join(
+        '../../KeyframePosition', video_name + '.csv')
+    with open(keyframePosPath) as file:
+        reader = csv.reader(file, delimiter=',')
+
+        ids = []
+        for row in reader:
+            ids.append(int(row[-1]))
+
+    data = []
+    for idx, image_path in enumerate(image_paths):
+        data.append({'image_path': image_path,
+                     'keyframe_id': ids[idx]})
+
     return jsonify(data)
 
 if __name__ == "__main__":

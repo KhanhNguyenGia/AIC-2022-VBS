@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import AddIcon from "@mui/icons-material/Add";
 
 const STORAGEURL = "http://0.0.0.0:8000/";
 const LOCALVIDEOURL = "file:///mnt/01D8D8D4752A1C30/VBS/Video/";
@@ -22,7 +23,7 @@ export default function Player(props) {
     };
 
     const handleNext = () => {
-        setIdx((prev) => Math.min(prev + 1, keyframeListLength));
+        setIdx((prev) => Math.min(prev + 1, keyframeListLength - 1));
     };
 
     const handleClickPlayer = () => {
@@ -32,6 +33,13 @@ export default function Player(props) {
             LOCALVIDEOURL + props.player.keyframesFolder + ".mp4";
         setVideoPlayer(localVideoURL);
     };
+
+    const handleAdd = () => {
+        const frame = props.player.keyframesList[idx].image_path.slice(10)
+        const parts = frame.split('/')
+        const newData = [parts[0] + '.mp4', props.player.keyframesList[idx].keyframe_id]
+        props.handleAdd(newData)
+    }
 
     useEffect(() => {
         const onKeyDown = (e) => {
@@ -64,7 +72,7 @@ export default function Player(props) {
             onClick={handleClick}
         >
             <img
-                src={STORAGEURL + props.player.keyframesList[idx]}
+                src={STORAGEURL + props.player.keyframesList[idx].image_path}
                 alt="abc"
                 width={1000}
                 onClick={handleClickPlayer}
@@ -81,10 +89,13 @@ export default function Player(props) {
                     <ArrowBackIosIcon />
                 </Button>
                 <div style={{ color: "black" }}>
-                    {props.player.keyframesList[idx].slice(10)}
+                    {props.player.keyframesList[idx].image_path.slice(10)}
                 </div>
                 <Button onClick={handleNext}>
                     <ArrowForwardIosIcon />
+                </Button>
+                <Button onClick={handleAdd}>
+                    <AddIcon />
                 </Button>
             </div>
             {

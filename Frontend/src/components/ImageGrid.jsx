@@ -29,9 +29,10 @@ export default function TitlebarBelowImageList(props) {
         }).catch(error => {
             console.log(error)
         })
-        console.log(img)
     }
 
+    console.log(player)
+    
     const handleClose = () => {
         setIdx(null)
     }
@@ -71,6 +72,7 @@ export default function TitlebarBelowImageList(props) {
                 onClick={() => setIdx(null)}
                 player={player}
                 idx={idx}
+                handleAdd={props.handleAdd}
             />)}
         </ImageList>
     );

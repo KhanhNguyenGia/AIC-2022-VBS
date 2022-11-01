@@ -3,6 +3,9 @@ import Inputs from "./components/SearchBar";
 import IconLabelButtons from "./components/Button";
 import { useState } from "react";
 import TitlebarBelowImageList from "./components/ImageGrid";
+import { CSVLink } from "react-csv";
+import RemoveIcon from "@mui/icons-material/Remove";
+import { Button } from "@mui/material";
 
 const BACKENDURL = "http://127.0.0.1:5000/";
 const STORAGEURL = "http://0.0.0.0:8000/";
@@ -10,6 +13,7 @@ const STORAGEURL = "http://0.0.0.0:8000/";
 function App() {
     const [query, setQuery] = useState("");
     const [images, setImages] = useState([]);
+    const [data, setData] = useState([]);
 
     const onFormSubmit = (e) => {
         e.preventDefault();
@@ -51,6 +55,14 @@ function App() {
         setQuery(e.target.value);
     };
 
+    const handleAdd = (newData) => {
+        setData([...data, newData]);
+    };
+
+    const handleRemove = (index) => {
+        setData((prev) => prev.filter((_, i) => i !== index));
+    };
+
     return (
         <div className="App">
             <form
@@ -79,8 +91,38 @@ function App() {
                     gap: 5,
                 }}
             >
-                <TitlebarBelowImageList images={images} />
-                
+                <TitlebarBelowImageList images={images} handleAdd={handleAdd} />
+                <div>
+                    Submit bar
+                    <div>
+                        <ul style={{ listStyle: "none", padding: 0 }}>
+                            {data.map((item, index) => (
+                                <li
+                                    style={{
+                                        display: "flex",
+                                        flexFlow: "row",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        gap: 5,
+                                    }}
+                                >
+                                    <Button onClick={() => handleRemove(index)}>
+                                        <RemoveIcon />
+                                    </Button>
+                                    <div>{`${item[0]}, ${item[1]}`}</div>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                    <CSVLink
+                        data={data}
+                        enclosingCharacter={``}
+                        separator={`,`}
+                    >
+                        Download me
+                    </CSVLink>
+                    ;
+                </div>
             </div>
         </div>
     );
